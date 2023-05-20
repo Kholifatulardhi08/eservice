@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Kategori\KategoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +16,20 @@ use App\Http\Controllers\Auth\AuthController;
 |
 */
 
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-], function(){
+Route::group([ 'middleware' => 'api', 'prefix' => 'auth' ], function()
+{
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::group(['middleware' => ['jwt.verify']], function()
+    {
+        // route untuk logout
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+        // route untuk Kategori
+        Route::resources([
+            'kategori' => KategoriController::class,
+        ]);
+
+    });
 });
