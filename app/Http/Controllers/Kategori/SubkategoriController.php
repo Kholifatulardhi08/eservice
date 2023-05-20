@@ -7,21 +7,26 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Subkategori;
 use App\Models\Kategori;
-use App\Http\Resources\KategoriResource;
+use App\Http\Resources\SubkategoriResource;
+use Illuminate\Support\Facades\DB;
 use File;
 
-class KategoriController extends Controller
+class SubkategoriController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Subkategori $subkategoris)
     {
-        $kategoris = Kategori::all();
-        return response()->json([
-            'data' => $kategoris
-        ]);
+        return DB::table('subkategoris')
+             ->join('kategoris', 'subkategoris.kategori_id','=','kategoris.id')
+             ->select('subkategoris.id', 'subkategoris.nama_subkategori',
+                      'subkategoris.deskripsi', 'subkategoris.gambar',
+                      'subkategoris.kategori_id')
+             ->orderBy('subkategoris.id', 'desc')
+             ->get();
     }
 
     /**
@@ -38,9 +43,10 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_kategori' => ['required'],
+            'nama_subkategori' => ['required'],
             'deskripsi' => ['required'],
-            'gambar' => 'required|image|mimes:jpg,png,jpeg,webp,jfif'
+            'gambar' => 'required|image|mimes:jpg,png,jpeg,webp,jfif',
+            'kategori_id' => ['required']
         ]);
 
          //response error validation
@@ -57,9 +63,9 @@ class KategoriController extends Controller
         }
 
         //save to database
-        $kategoris = Kategori::create($input);
+        $subkategoris = Subkategori::create($input);
 
-        return new KategoriResource($kategoris);
+        return new SubkategoriResource($subkategoris);
     }
 
     /**
@@ -67,9 +73,9 @@ class KategoriController extends Controller
      */
     public function show($id)
     {
-        $kategoris = Kategori::find($id);
+        $subkategoris = Subkategori::find($id);
         return response()->json([
-            'data' => $kategoris
+            'data' => $subkategoris
         ]);
     }
 
@@ -86,11 +92,12 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $kategoris = Kategori::find($id);
+        $subkategoris = Subkategori::find($id);
         $validator = Validator::make($request->all(), [
-            'nama_kategori' => ['required'],
+            'nama_subkategori' => ['required'],
             'deskripsi' => ['required'],
-            // 'gambar' => 'required|image|mimes:jpg,png,jpeg,webp,jfif'
+            // 'gambar' => 'required|image|mimes:jpg,png,jpeg,webp,jfif',
+            'kategori_id' => ['required']
         ]);
 
         //response error validation
@@ -101,7 +108,7 @@ class KategoriController extends Controller
         $input = $request->all();
 
         if ($request->has('gambar')) {
-            file::delete('uploads/' . $kategoris->gambar);
+            file::delete('uploads/' . $subkategoris->gambar);
             $gambar = $request->file('gambar');
             $nama_gambar = time() . rand(1,9) . '.' . $gambar->getClientOriginalExtension();
             $gambar->move('uploads', $nama_gambar);
@@ -111,9 +118,9 @@ class KategoriController extends Controller
         }
 
         //save to database
-        $kategoris -> update($input);
+        $subkategoris -> update($input);
 
-        return new KategoriResource($kategoris);
+        return new SubkategoriResource($subkategoris);
     }
 
     /**
@@ -121,6 +128,6 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        return Kategori::destroy($id);
+        return Subkategori::destroy($id);
     }
 }
