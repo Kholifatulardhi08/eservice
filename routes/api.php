@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Kategori\KategoriController;
 use App\Http\Controllers\Kategori\SubkategoriController;
+use App\Http\Controllers\Slider\SliderController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,10 +29,11 @@ Route::group([ 'middleware' => 'api', 'prefix' => 'auth' ], function()
         // route untuk logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-        // route untuk Kategori
+        // route untuk Resources Api
         Route::resources([
             'kategori' => KategoriController::class,
             'subkategori' => SubkategoriController::class,
+            'slider' => SliderController::class,
         ]);
 
     });
