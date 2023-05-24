@@ -5,14 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Kategori;
-use App\Models\Jasa;
+use App\Models\Subkategori;
 
-class Subkategori extends Model
+class Jasa extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'nama_subkategori', 'deskripsi', 'gambar', 'kategori_id'
+        'nama_jasa',
+        'deskripsi',
+        'gambar',
+        'kategori_id',
+        'subkategori_id',
+        'harga',
+        'diskon',
+        'tags'
     ];
 
     public function kategori()
@@ -20,7 +27,8 @@ class Subkategori extends Model
         return $this->belongsTo(Kategori::class);
     }
 
-    public function jasa(){
-        return $this->hasMany(Jasa::class);
+    public function subkategori()
+    {
+        return $this->belongsTo(Subkategori::class);
     }
 }

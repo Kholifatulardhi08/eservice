@@ -6,6 +6,9 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Kategori\KategoriController;
 use App\Http\Controllers\Kategori\SubkategoriController;
 use App\Http\Controllers\Slider\SliderController;
+use App\Http\Controllers\Jasa\JasaController;
+use App\Http\Controllers\Pengguna\PenyediaController;
+use App\Http\Controllers\Pengguna\PenyewaController;
 
 
 /*
@@ -34,6 +37,9 @@ Route::group([ 'middleware' => 'api', 'prefix' => 'auth' ], function()
             'kategori' => KategoriController::class,
             'subkategori' => SubkategoriController::class,
             'slider' => SliderController::class,
+            'jasa' => JasaController::class,
+            'penyedia' => PenyediaController::class,
+            'penyewa' => PenyewaController::class,
         ]);
 
     });
