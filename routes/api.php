@@ -6,9 +6,13 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Kategori\KategoriController;
 use App\Http\Controllers\Kategori\SubkategoriController;
 use App\Http\Controllers\Slider\SliderController;
+use App\Http\Controllers\Slider\TestimoniController;
 use App\Http\Controllers\Jasa\JasaController;
 use App\Http\Controllers\Pengguna\PenyediaController;
 use App\Http\Controllers\Pengguna\PenyewaController;
+use App\Http\Controllers\Pesanan\PesananController;
+use App\Http\Controllers\Pesanan\PesananDetailController;
+
 
 
 /*
@@ -40,7 +44,9 @@ Route::group([ 'middleware' => 'api', 'prefix' => 'auth' ], function()
             'jasa' => JasaController::class,
             'penyedia' => PenyediaController::class,
             'penyewa' => PenyewaController::class,
+            'testimoni' => TestimoniController::class,
+            'pesanan' => PesananController::class,
+            'pesanan_detail' => PesananDetailController::class,
         ]);
-
     });
 });

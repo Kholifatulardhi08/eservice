@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Review;
+use App\Models\Pesanan;
+
 
 class Penyewa extends Model
 {
@@ -20,4 +23,12 @@ class Penyewa extends Model
         'no_hp'
     ];
 
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
+    public function pesanan()
+    {
+        return $this->hasOne(Pesanan::class);
+    }
 }

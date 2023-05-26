@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Pengguna;
+namespace App\Http\Controllers\Slider;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Penyewa;
-use App\Http\Resources\PenyewaResource;
+use App\Models\Testimoni;
+use App\Http\Resources\TestimoniResource;
 use File;
 
-class PenyewaController extends Controller
+class TestimoniController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $penyewa = Penyewa::all();
+        $testimoni = Testimoni::all();
         return response()->json([
-            'data' => $penyewa
+            'data' => $testimoni
         ]);
     }
 
@@ -38,14 +38,9 @@ class PenyewaController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_penyewa' => ['required'],
-            'email' => ['required'],
-            'password' => ['required'],
-            'provinsi' => ['required'],
-            'kabupaten' => ['required'],
-            'kecamatan' => ['required'],
-            'detail_alamat' => ['required'],
-            'no_hp' => ['required']
+            'nama_testimoni' => ['required'],
+            'deskripsi' => ['required'],
+            'gambar' => 'required|image|mimes:jpg,png,jpeg,webp,jfif'
         ]);
 
          //response error validation
@@ -62,19 +57,19 @@ class PenyewaController extends Controller
         }
 
         //save to database
-        $penyewa = Penyewa::create($input);
+        $testimoni = Testimoni::create($input);
 
-        return new PenyewaResource($penyewa);
+        return new TestimoniResource($testimoni);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
-        $penyewa = Penyewa::find($id);
+        $testimoni = Testimoni::find($id);
         return response()->json([
-            'data' => $penyewa
+            'data' => $testimoni
         ]);
     }
 
@@ -91,16 +86,11 @@ class PenyewaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $penyewa = Penyewa::find($id);
+        $testimoni = Testimoni::find($id);
         $validator = Validator::make($request->all(), [
-            'nama_penyewa' => ['required'],
-            'email' => ['required'],
-            'password' => ['required'],
-            'provinsi' => ['required'],
-            'kabupaten' => ['required'],
-            'kecamatan' => ['required'],
-            'detail_alamat' => ['required'],
-            'no_hp' => ['required'],
+            'nama_testimoni' => ['required'],
+            'deskripsi' => ['required'],
+            // 'gambar' => 'required|image|mimes:jpg,png,jpeg,webp,jfif'
         ]);
 
         //response error validation
@@ -111,7 +101,7 @@ class PenyewaController extends Controller
         $input = $request->all();
 
         if ($request->has('gambar')) {
-            file::delete('uploads/' . $penyewa->gambar);
+            file::delete('uploads/' . $testimoni->gambar);
             $gambar = $request->file('gambar');
             $nama_gambar = time() . rand(1,9) . '.' . $gambar->getClientOriginalExtension();
             $gambar->move('uploads', $nama_gambar);
@@ -121,16 +111,16 @@ class PenyewaController extends Controller
         }
 
         //save to database
-        $penyewa->update($input);
+        $testimoni -> update($input);
 
-        return new PenyewaResource($penyewa);
+        return new TestimoniResource($testimoni);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        return Penyewa::destroy($id);
+        return Testimoni::destroy($id);
     }
 }

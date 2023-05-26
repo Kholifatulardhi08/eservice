@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Kategori;
 use App\Models\Subkategori;
+use App\Model\PesananDetail;
 
 class Jasa extends Model
 {
@@ -30,5 +31,10 @@ class Jasa extends Model
     public function subkategori()
     {
         return $this->belongsTo(Subkategori::class);
+    }
+
+    public function pesanan_detail()
+    {
+        return $this->belongsTo(PesananDetail::class);
     }
 }

@@ -5,20 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Penyewa;
+use App\Models\PesananDetail;
 
-class Review extends Model
+class Pesanan extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected $fillable =[
         'penyewa_id',
-        'jasa_id',
-        'deskripsi',
-        'rating'
-    ]
+        'invoice',
+        'grand_total',
+        'status'
+    ];
 
     public function penyewa()
     {
         return $this->belongsTo(Penyewa::class);
     }
+
+    public function pesanan_detail()
+    {
+        return $this->belongsTo(PesananDetail::class);
+    }
+
 }
