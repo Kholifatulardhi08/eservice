@@ -15,7 +15,7 @@ class Review extends Model
         'jasa_id',
         'deskripsi',
         'rating'
-    ]
+    ];
 
     public function penyewa()
     {

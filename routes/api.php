@@ -11,6 +11,8 @@ use App\Http\Controllers\Jasa\JasaController;
 use App\Http\Controllers\Pengguna\PenyediaController;
 use App\Http\Controllers\Pengguna\PenyewaController;
 use App\Http\Controllers\Pesanan\PesananController;
+use App\Http\Controllers\Pesanan\LaporanController;
+use App\Http\Controllers\Pesanan\ReviewController;
 
 
 
@@ -33,6 +35,7 @@ Route::group([ 'middleware' => 'api', 'prefix' => 'auth' ], function()
     Route::get('/pesanan/diproses', [PesananController::class, 'diproses'])->name('diproses');
     Route::get('/pesanan/selesai', [PesananController::class, 'selesai'])->name('selesai');
     Route::post('/pesanan/ubah_status/{pesanan}', [PesananController::class, 'ubah_status'])->name('ubah_status');
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('index');
 
 
     Route::group(['middleware' => ['jwt.verify']], function()
@@ -50,6 +53,7 @@ Route::group([ 'middleware' => 'api', 'prefix' => 'auth' ], function()
             'penyewa' => PenyewaController::class,
             'testimoni' => TestimoniController::class,
             'pesanan' => PesananController::class,
+            'review' => ReviewController::class,
         ]);
     });
 });
