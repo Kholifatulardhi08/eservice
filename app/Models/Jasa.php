@@ -35,6 +35,6 @@ class Jasa extends Model
 
     public function pesanan_detail()
     {
-        return $this->belongsTo(PesananDetail::class);
+        return $this->hasOne(PesananDetail::class);
     }
 }

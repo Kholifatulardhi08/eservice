@@ -11,12 +11,7 @@ class PesananDetail extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'pesanan_id',
-        'jasa_id',
-        'total',
-        'jumlah',
-    ];
+    protected $table = 'pesanan_details';
 
     public function jasa()
     {

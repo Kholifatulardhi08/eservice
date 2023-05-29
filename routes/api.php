@@ -11,7 +11,6 @@ use App\Http\Controllers\Jasa\JasaController;
 use App\Http\Controllers\Pengguna\PenyediaController;
 use App\Http\Controllers\Pengguna\PenyewaController;
 use App\Http\Controllers\Pesanan\PesananController;
-use App\Http\Controllers\Pesanan\PesananDetailController;
 
 
 
@@ -30,6 +29,11 @@ Route::group([ 'middleware' => 'api', 'prefix' => 'auth' ], function()
 {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::get('/pesanan/dikonfirmasi', [PesananController::class, 'dikonfirmasi'])->name('dikonfirmasi');
+    Route::get('/pesanan/diproses', [PesananController::class, 'diproses'])->name('diproses');
+    Route::get('/pesanan/selesai', [PesananController::class, 'selesai'])->name('selesai');
+    Route::post('/pesanan/ubah_status/{pesanan}', [PesananController::class, 'ubah_status'])->name('ubah_status');
+
 
     Route::group(['middleware' => ['jwt.verify']], function()
     {
@@ -46,7 +50,6 @@ Route::group([ 'middleware' => 'api', 'prefix' => 'auth' ], function()
             'penyewa' => PenyewaController::class,
             'testimoni' => TestimoniController::class,
             'pesanan' => PesananController::class,
-            'pesanan_detail' => PesananDetailController::class,
         ]);
     });
 });

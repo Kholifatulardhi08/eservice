@@ -11,12 +11,7 @@ class Pesanan extends Model
 {
     use HasFactory;
 
-    protected $fillable =[
-        'penyewa_id',
-        'invoice',
-        'grand_total',
-        'status'
-    ];
+    protected $guarded = [];
 
     public function penyewa()
     {
@@ -25,7 +20,7 @@ class Pesanan extends Model
 
     public function pesanan_detail()
     {
-        return $this->belongsTo(PesananDetail::class);
+        return $this->hasOne(PesananDetail::class);
     }
 
 }
