@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             // ADD foreign key
-            $table->foreign('pesanan_id')->references('id')->on('pesanans')->onDelete('cascade');
+            // $table->foreign('pesanan_id')->references('id')->on('pesanans')->onDelete('cascade');
             $table->foreign('jasa_id')->references('id')->on('jasas')->onDelete('cascade');
         });
     }
