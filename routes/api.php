@@ -31,6 +31,10 @@ Route::group([ 'middleware' => 'api', 'prefix' => 'auth' ], function()
 {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
+    // Route login register penyewa
+    Route::post('/login_penyewa', [AuthController::class, 'loginpenyewa'])->name('loginpenyewa');
+    Route::post('/register_penyewa', [AuthController::class, 'registerpenyewa'])->name('registerpenyewa');
+
     Route::get('/pesanan/dikonfirmasi', [PesananController::class, 'dikonfirmasi'])->name('dikonfirmasi');
     Route::get('/pesanan/diproses', [PesananController::class, 'diproses'])->name('diproses');
     Route::get('/pesanan/selesai', [PesananController::class, 'selesai'])->name('selesai');

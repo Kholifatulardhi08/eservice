@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Penyewa;
+use App\Models\Penyedia;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +21,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'registerpenyewa', 'loginpenyewa']]);
     }
 
     /**
@@ -42,9 +44,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'min:3', 'max:150'],
             'email' => ['required', 'string', 'email', 'max:50', 'unique:users'],
-            'password' => ['required', 'string', 'min:6'],
-            // 'phone_number' => ['required', 'string', 'max:15'],
-            // 'role' => ['required', 'in:Admin,Guest,Pantry']
+            'password' => ['required', 'string', 'min:6']
         ]);
 
         //response error validation
@@ -57,9 +57,6 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            // 'phone_number' => $request->phone_number,
-            // 'status_verified' => false,
-            // 'role' => $request->role
         ]);
 
         return response()->json([
@@ -70,7 +67,6 @@ class AuthController extends Controller
 
     public function logout(Request $request) {
         auth()->logout();
-       //$request->user()->currentAccessToken()->delete()
         return response()->json(['message' => 'User successfully signed out']);
     }
 
@@ -88,5 +84,51 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+    public function loginpenyewa(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email|max:50',
+            'password' => 'required|string|min:6'
+        ]);
+
+        if ($token = Auth::attempt($credentials)) {
+            $penyewa = Penyewa::where('email', $request['email'])
+            ->select('id', 'email')->first()->toArray();
+
+
+            $penyewa += ['jwt_token' => $token];
+
+            return response()->json($penyewa, Response::HTTP_CREATED);
+        }
+        return response()->json(["status" => Response::HTTP_UNAUTHORIZED, "message" => "email/password wrong"], Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function registerpenyewa(Request $request) 
+    {
+        $validator = Validator::make($request->all(), [
+            'nama_penyewa' => ['required'],
+            'email' => ['required'],
+            'password' => ['required'],
+            'provinsi' => ['required'],
+            'kabupaten' => ['required'],
+            'kecamatan' => ['required'],
+            'detail_alamat' => ['required'],
+            'no_hp' => ['required']
+        ]);
+
+        //response error validation
+        if ($validator->fails()) {
+            return response()->json(["message" => $validator->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $input = $request->all();
+        $input['password'] = bcrypt($request->password);
+        $penyewa = Penyewa::create($input);
+        return response()->json([
+            'message' => 'Penyewa successfully registered',
+            'penyewa' => $penyewa
+        ], 201);
     }
 }

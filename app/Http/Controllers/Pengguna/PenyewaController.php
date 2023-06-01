@@ -54,12 +54,6 @@ class PenyewaController extends Controller
         }
 
         $input = $request->all();
-        if ($request->has('gambar')) {
-            $gambar = $request->file('gambar');
-            $nama_gambar = time() . rand(1,9) . '.' . $gambar->getClientOriginalExtension();
-            $gambar->move('uploads', $nama_gambar);
-            $input['gambar'] = $nama_gambar;
-        }
 
         //save to database
         $penyewa = Penyewa::create($input);
@@ -109,16 +103,6 @@ class PenyewaController extends Controller
         }
 
         $input = $request->all();
-
-        if ($request->has('gambar')) {
-            file::delete('uploads/' . $penyewa->gambar);
-            $gambar = $request->file('gambar');
-            $nama_gambar = time() . rand(1,9) . '.' . $gambar->getClientOriginalExtension();
-            $gambar->move('uploads', $nama_gambar);
-            $input['gambar'] = $nama_gambar;
-        } else {
-            unset($input['gambar']);
-        }
 
         //save to database
         $penyewa->update($input);

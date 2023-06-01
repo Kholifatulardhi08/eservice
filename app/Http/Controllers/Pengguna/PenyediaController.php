@@ -55,13 +55,7 @@ class PenyediaController extends Controller
         }
 
         $input = $request->all();
-        if ($request->has('gambar')) {
-            $gambar = $request->file('gambar');
-            $nama_gambar = time() . rand(1,9) . '.' . $gambar->getClientOriginalExtension();
-            $gambar->move('uploads', $nama_gambar);
-            $input['gambar'] = $nama_gambar;
-        }
-
+        
         //save to database
         $penyedia = Penyedia::create($input);
 
@@ -110,16 +104,6 @@ class PenyediaController extends Controller
         }
 
         $input = $request->all();
-
-        if ($request->has('gambar')) {
-            file::delete('uploads/' . $penyedia->gambar);
-            $gambar = $request->file('gambar');
-            $nama_gambar = time() . rand(1,9) . '.' . $gambar->getClientOriginalExtension();
-            $gambar->move('uploads', $nama_gambar);
-            $input['gambar'] = $nama_gambar;
-        } else {
-            unset($input['gambar']);
-        }
 
         //save to database
         $penyedia -> update($input);
